@@ -36,9 +36,8 @@ let compress ~level ?dict s =
   check r;
   string_from_ptr dst (Size_t.to_int r)
 
-let decompress orig ?dict s =
+  let decompress' orig ?dict s dst =
   let open Ctypes in
-  let dst = allocate_n char ~count:orig in
   let r =
     match dict with
     | None -> do_decompress (to_voidp dst) (Size_t.of_int orig) s (Size_t.of_int @@ String.length s)
@@ -49,4 +48,21 @@ let decompress orig ?dict s =
       end
   in
   check r;
-  string_from_ptr dst (Size_t.to_int r)
+  Size_t.to_int r
+
+let decompress orig ?dict s =
+  let open Ctypes in
+  let dst = allocate_n char ~count:orig in
+  let len = decompress' orig ?dict s dst in
+  string_from_ptr dst len
+
+let decompress_blit orig ?dict s out =
+  let open Ctypes in
+  if orig > String.length out then raise (Invalid_argument "Ouput buffer size is not large enough");
+  let dst = allocate_n char ~count:orig in
+  let len = decompress' orig ?dict s dst in
+  let bout = bigarray_of_ptr array1 len Bigarray.char (coerce string (ptr char) out) in
+  let bdst = bigarray_of_ptr array1 len Bigarray.char dst in
+  Bigarray.Array1.blit bdst bout;
+  len
+

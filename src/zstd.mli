@@ -14,3 +14,8 @@ val compress : level:int -> ?dict:string -> string -> string
   [dict] must be identical to the one used during compression, otherwise uncompressed data will be corrupted.
 *)
 val decompress : int -> ?dict:string -> string -> string
+
+(**
+   [decompress orig_size ?dict s output]
+   decompress into the given [output] string. @raise [Invalid_argument] if the string is not large enough *)
+val decompress_blit : int -> ?dict:string -> string -> string -> int
