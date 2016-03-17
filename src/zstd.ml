@@ -2,6 +2,7 @@ module Z = Zstd_stubs.Bindings(Zstd_generated)
 include Z
 
 module Size_t = Unsigned.Size_t
+module UInt = Unsigned.UInt
 
 exception Error of string
 
@@ -22,15 +23,12 @@ let free_dctx x = check (free_dctx x)
 let generate_dictionary dict_size samples =
   let open Ctypes in
   let dst = allocate_n char ~count:dict_size in
-  let cast_int = Ctypes.coerce int Ctypes.uint in
-  let cast_void = Ctypes.coerce (ptr char) (ptr void)  in
-  let nbSamples = cast_int @@ List.length samples in
-  let cast_size_t = Ctypes.coerce int size_t in
+  let nbSamples = UInt.of_int ( List.length samples) in
   let pointers = (CArray.of_list string  ) @@ samples in
-  let sizes = (CArray.of_list size_t) @@ List.map (fun x -> cast_size_t @@ String.length x) samples in
+  let sizes = (CArray.of_list size_t) @@ List.map (fun x -> Size_t.of_int @@ String.length x) samples in
   let pointers_start = to_voidp  @@ CArray.start pointers in
   let sizes = CArray.start sizes in
-  check (do_train_from_buffer (cast_void dst) (cast_size_t dict_size) pointers_start sizes nbSamples  );
+  check (do_train_from_buffer (to_voidp dst) (Size_t.of_int dict_size) pointers_start sizes nbSamples  );
   string_from_ptr dst dict_size
 
 let compress ~level ?dict s =
