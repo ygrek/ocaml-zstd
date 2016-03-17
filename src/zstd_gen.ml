@@ -1,5 +1,5 @@
 
-let c_headers = "#include <zstd.h>"
+let c_headers = "#include <zstd.h> \n #include \"zstd.h\""
 
 let () =
   let ml_out = open_out "src/zstd_generated.ml"

@@ -32,4 +32,6 @@ struct
   let do_decompress_dict = foreign "ZSTD_decompress_usingDict" (ptr dctx @-> ptr void @-> size_t @-> string @-> size_t @->
     string @-> size_t @-> returning size_t)
 
+  let do_train_from_buffer = foreign "ZDICT_trainFromBuffer" (ptr void @-> size_t @-> ptr void @-> ptr size_t @->  uint @-> returning size_t)
+
 end
