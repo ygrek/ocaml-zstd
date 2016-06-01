@@ -1,8 +1,7 @@
 open Ctypes
 
 module Bindings
-  (F : sig type _ fn
-           val foreign : string -> ('a -> 'b) Ctypes.fn -> ('a -> 'b) fn end) =
+  (F : Cstubs.FOREIGN) =
 struct
   open F
 
