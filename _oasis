@@ -1,6 +1,6 @@
 OASISFormat: 0.4
 Name:        zstd
-Version:     0.1
+Version:     0.2
 Synopsis:    Bindings to zstd compression library
 Authors:     ygrek
 Copyrights:  (C) 2016 ygrek

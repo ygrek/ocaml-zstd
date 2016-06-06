@@ -41,11 +41,11 @@ let decompress orig ?dict s =
   let dst = allocate_n char ~count:orig in
   let r =
     match dict with
-    | None -> do_decompress (to_voidp dst) (Size_t.of_int orig) s (Size_t.of_int @@ String.length s)
+    | None -> do_decompress (to_voidp dst) (Size_t.of_int orig) s (Size_t.of_int (String.length s))
     | Some dict ->
       let dlen = Size_t.of_int (String.length dict) in
       bracket (create_dctx ()) free_dctx begin fun dctx ->
-        do_decompress_dict dctx (to_voidp dst) (Size_t.of_int orig) s (Size_t.of_int @@ String.length s) dict dlen
+        do_decompress_dict dctx (to_voidp dst) (Size_t.of_int orig) s (Size_t.of_int (String.length s)) dict dlen
       end
   in
   check r;
