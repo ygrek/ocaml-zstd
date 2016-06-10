@@ -16,6 +16,7 @@ let bracket res destroy k =
   r
 
 let check r = if isError r then raise (Error (getErrorName r))
+let checkdict r = if isDictError r then raise (Error (getDictErrorName r))
 
 let free_cctx x = check (free_cctx x)
 let free_dctx x = check (free_dctx x)
@@ -24,11 +25,10 @@ let generate_dictionary dict_size samples =
   let open Ctypes in
   let dst = allocate_n char ~count:dict_size in
   let nbSamples = UInt.of_int ( List.length samples) in
-  let pointers = (CArray.of_list string  ) @@ samples in
   let sizes = (CArray.of_list size_t) @@ List.map (fun x -> Size_t.of_int @@ String.length x) samples in
-  let pointers_start = to_voidp  @@ CArray.start pointers in
   let sizes = CArray.start sizes in
-  check (do_train_from_buffer (to_voidp dst) (Size_t.of_int dict_size) pointers_start sizes nbSamples  );
+  let samples = samples |> String.concat "" in
+  checkdict (do_train_from_buffer (to_voidp dst) (Size_t.of_int dict_size) samples sizes nbSamples);
   string_from_ptr dst dict_size
 
 let compress ~level ?dict s =
