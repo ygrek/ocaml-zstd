@@ -1,46 +1,27 @@
-# OASIS_START
-# DO NOT EDIT (digest: a3c674b4239234cbbe53afe090018954)
+build:
+	dune build
 
-SETUP = ocaml setup.ml
+doc:
+	dune build @doc
 
-build: setup.data
-	$(SETUP) -build $(BUILDFLAGS)
+test:
+	dune runtest
 
-doc: setup.data build
-	$(SETUP) -doc $(DOCFLAGS)
+all: build doc test
 
-test: setup.data build
-	$(SETUP) -test $(TESTFLAGS)
+install:
+	dune install
 
-all:
-	$(SETUP) -all $(ALLFLAGS)
+uninstall:
+	dune uninstall
 
-install: setup.data
-	$(SETUP) -install $(INSTALLFLAGS)
-
-uninstall: setup.data
-	$(SETUP) -uninstall $(UNINSTALLFLAGS)
-
-reinstall: setup.data
-	$(SETUP) -reinstall $(REINSTALLFLAGS)
 
 clean:
-	$(SETUP) -clean $(CLEANFLAGS)
+	dune clean
 
-distclean:
-	$(SETUP) -distclean $(DISTCLEANFLAGS)
+.PHONY: build doc test all install uninstall clean
 
-setup.data:
-	$(SETUP) -configure $(CONFIGUREFLAGS)
-
-configure:
-	$(SETUP) -configure $(CONFIGUREFLAGS)
-
-.PHONY: build doc test all install uninstall reinstall clean distclean configure
-
-# OASIS_STOP
-
-VERSION=$(shell oasis query version)
+VERSION=0.2
 NAME=ocaml-zstd-$(VERSION)
 
 .PHONY: release

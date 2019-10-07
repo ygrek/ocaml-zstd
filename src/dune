@@ -1,0 +1,24 @@
+(library
+  (name zstd_stubs)
+  (public_name zstd.stubs)
+  (wrapped false)
+  (modules zstd_stubs)
+  (libraries ctypes))
+
+(executable
+  (name zstd_gen)
+  (modules zstd_gen)
+  (libraries ctypes.stubs zstd.stubs))
+
+(rule
+ (targets zstd_generated.ml zstd_cstubs.c)
+ (deps (:gen zstd_gen.exe) zstd_stubs.ml )
+ (action (run %{gen})))
+
+(library
+  (public_name zstd)
+  (modules zstd zstd_generated)
+  (private_modules zstd_generated)
+  (libraries ctypes.stubs zstd.stubs)
+  (c_names zstd_cstubs)
+  (c_library_flags -lzstd))

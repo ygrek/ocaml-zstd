@@ -34,7 +34,7 @@ let compress ~level ?dict s =
       end
   in
   check r;
-  string_from_ptr dst (Size_t.to_int r)
+  string_from_ptr dst ~length:(Size_t.to_int r)
 
 let decompress orig ?dict s =
   let open Ctypes in
@@ -49,4 +49,4 @@ let decompress orig ?dict s =
       end
   in
   check r;
-  string_from_ptr dst (Size_t.to_int r)
+  string_from_ptr dst ~length:(Size_t.to_int r)
