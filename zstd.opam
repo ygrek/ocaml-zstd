@@ -1,0 +1,28 @@
+opam-version: "2.0"
+maintainer: "ygrek@autistici.org"
+homepage: "https://github.com/ygrek/ocaml-zstd"
+license: "BSD-3-Clause"
+authors: [ "ygrek" ]
+#doc: ["http://ocurl.forge.ocamlcore.org/api/index.html"]
+dev-repo: "git://github.com/ygrek/ocaml-zstd.git"
+bug-reports: "https://github.com/ygrek/ocaml-zstd/issues"
+build: [
+  ["dune" "subst"] {pinned}
+  ["dune" "build" "-p" name "-j" jobs
+    "@install"
+    "@doc" {with-doc}
+    "@runtest" {with-test}]
+]
+depends: [
+  "ocaml"
+  "dune" {>= "1.11"}
+  "ctypes"
+  ("extlib" {with-test} | "extlib-compat" {with-test})
+  "base-unix" {with-test}
+  "conf-zstd"
+]
+synopsis: "Bindings to zstd compression library"
+description: """
+Zstd, short for Zstandard, is a fast lossless compression algorithm,
+targeting real-time compression scenarios at zlib-level compression ratio.
+See http://zstd.net/ for more info."""
