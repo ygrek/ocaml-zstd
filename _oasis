@@ -23,7 +23,7 @@ Library zstd
   InternalModules: Zstd_stubs, Zstd_generated
   CClib: -lzstd
   BuildDepends: ctypes.stubs
-  CSources: zstd_cstubs.c
+  CSources: zstd_cstubs.c, zstd_ocaml_stubs.c
 
 Executable zstd_gen
   Install: false

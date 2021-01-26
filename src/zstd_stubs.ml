@@ -10,8 +10,8 @@ struct
   let getErrorName = foreign "ZSTD_getErrorName" (size_t @-> returning string)
   let isError = foreign "ZSTD_isError" (size_t @-> returning bool)
 
-  let do_compress = foreign "ZSTD_compress" (ptr void @-> size_t @-> ocaml_string @-> size_t @-> int @-> returning size_t)
-  let do_decompress = foreign "ZSTD_decompress" (ptr void @-> size_t @-> ocaml_string @-> size_t @-> returning size_t)
+  let do_compress = foreign "OCAMLZSTD_compress_offset" (ptr void @-> size_t @-> ocaml_string @-> size_t @-> size_t @-> int @-> returning size_t)
+  let do_decompress = foreign "OCAMLZSTD_decompress_offset" (ptr void @-> size_t @-> ocaml_string @-> size_t @-> size_t @-> returning size_t)
 
   let cctx : [`CCtx] structure typ = structure "ZSTD_CCtx_s"
   let create_cctx = foreign "ZSTD_createCCtx" (void @-> returning (ptr cctx))
@@ -25,10 +25,10 @@ struct
 
   let do_decompress_dctx = foreign "ZSTD_decompressDCtx" (ptr dctx @-> ptr void @-> size_t @-> string @-> size_t @-> returning size_t)
 
-  let do_compress_dict = foreign "ZSTD_compress_usingDict" (ptr cctx @-> ptr void @-> size_t @-> string @-> size_t @->
+  let do_compress_dict = foreign "OCAMLZSTD_compress_usingDict_offset" (ptr cctx @-> ptr void @-> size_t @-> ocaml_string @-> size_t @-> size_t @->
     string @-> size_t @-> int @-> returning size_t)
 
-  let do_decompress_dict = foreign "ZSTD_decompress_usingDict" (ptr dctx @-> ptr void @-> size_t @-> string @-> size_t @->
+  let do_decompress_dict = foreign "OCAMLZSTD_decompress_usingDict_offset" (ptr dctx @-> ptr void @-> size_t @-> ocaml_string @-> size_t @-> size_t @->
     string @-> size_t @-> returning size_t)
 
 end
