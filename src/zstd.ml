@@ -21,8 +21,15 @@ let free_dctx x = check (free_dctx x)
 
 let check_size_offset size offset len =
   if offset < 0 then raise (Invalid_argument "negative offset");
-  let size = match size with None -> len - offset | Some s when s < 0 -> raise (Invalid_argument "negative size") | Some s -> s in
-  if size + offset > len then raise (Invalid_argument "given size + offset is bigger than string len");
+  let size_check =
+    match size with
+    | None -> len
+    | Some s when s < 0 -> raise (Invalid_argument "negative size")
+    | Some s when s > len -> raise (Invalid_argument "given size is bigger than string len")
+    | Some s -> s
+  in
+  if offset > size_check then raise (Invalid_argument "given offset is bigger than len");
+  let size = match size with None -> len - offset | Some s -> s in
   size, offset
 
 let compress ~level ?dict ?(offset=0) ?size s =
