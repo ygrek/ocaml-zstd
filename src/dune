@@ -19,6 +19,8 @@
   (public_name zstd)
   (modules zstd zstd_generated)
   (private_modules zstd_generated)
-  (libraries ctypes.stubs zstd.stubs)
-  (c_names zstd_cstubs)
+  (libraries ctypes.stubs zstd.stubs integers)
+  (foreign_stubs
+    (language c)
+    (names zstd_cstubs))
   (c_library_flags -lzstd))
