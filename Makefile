@@ -21,11 +21,11 @@ clean:
 
 .PHONY: build doc test all install uninstall clean
 
-VERSION=0.2
+VERSION=0.3
 NAME=ocaml-zstd-$(VERSION)
 
 .PHONY: release
 release:
 	git tag -a -m $(VERSION) v$(VERSION)
 	git archive --prefix=$(NAME)/ v$(VERSION) | gzip > $(NAME).tar.gz
-	gpg -a -b $(NAME).tar.gz
+	gpg -a -b $(NAME).tar.gz -o $(NAME).tar.gz.asc
