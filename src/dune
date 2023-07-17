@@ -3,7 +3,7 @@
   (public_name zstd.stubs)
   (wrapped false)
   (modules zstd_stubs)
-  (libraries ctypes))
+  (libraries ctypes.stubs))
 
 (executable
   (name zstd_gen)
