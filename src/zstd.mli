@@ -14,3 +14,5 @@ val compress : level:int -> ?dict:string -> string -> string
   [dict] must be identical to the one used during compression, otherwise uncompressed data will be corrupted.
 *)
 val decompress : int -> ?dict:string -> string -> string
+
+val get_decompressed_size : string -> int

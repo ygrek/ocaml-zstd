@@ -51,3 +51,12 @@ let decompress orig ?dict s =
   in
   check r;
   string_from_ptr dst ~length:(Size_t.to_int r)
+
+let get_decompressed_size s =
+  let r = F.get_frame_content_size s (Size_t.of_int (String.length s)) in
+  if r = T.content_size_error then
+    raise (Error "content size error")
+  else if r = T.content_size_unknown then
+    raise (Error "content size unknown")
+  else
+    Unsigned.ULLong.to_int r

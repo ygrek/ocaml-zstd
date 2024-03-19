@@ -5,6 +5,7 @@ let test (name,src) =
   let orig = String.length src in
   let a = Array.init 20 (fun level -> Zstd.compress ~level src) in
   a |> Array.iteri begin fun i s ->
+    assert (Zstd.get_decompressed_size s = orig);
     let s = Zstd.decompress orig s in
     if s <> src then failwith @@ sprintf "%s : level %d failed" name i;
   end;

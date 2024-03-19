@@ -10,6 +10,8 @@ module Functions (F : Cstubs.FOREIGN) = struct
   let get_error_name = foreign "ZSTD_getErrorName" (size_t @-> returning string)
   let is_error = foreign "ZSTD_isError" (size_t @-> returning bool)
 
+  let get_frame_content_size = foreign "ZSTD_getFrameContentSize" (string @-> size_t @-> returning ullong)
+
   let compress = foreign "ZSTD_compress" (ptr void @-> size_t @-> string @-> size_t @-> int @-> returning size_t)
   let decompress = foreign "ZSTD_decompress" (ptr void @-> size_t @-> string @-> size_t @-> returning size_t)
 
