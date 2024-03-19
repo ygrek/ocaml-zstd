@@ -21,7 +21,7 @@ clean:
 
 .PHONY: build doc test all install uninstall clean
 
-VERSION=0.3
+VERSION=0.4
 NAME=ocaml-zstd-$(VERSION)
 
 .PHONY: release
