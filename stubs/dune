@@ -1,0 +1,16 @@
+(library
+ (name zstd_stubs)
+ (public_name zstd.stubs)
+ (libraries ctypes.stubs integers)
+ (ctypes
+  (external_library_name libzstd)
+  (headers (include "zstd.h"))
+  (type_description
+   (instance Types)
+   (functor Type_description))
+  (function_description
+   (concurrency unlocked)
+   (instance Functions)
+   (functor Function_description))
+  (generated_types Types_generated)
+  (generated_entry_point C)))

@@ -1,36 +1,37 @@
-module Z = Zstd_stubs.Bindings(Zstd_generated)
-include Z
+open Zstd_stubs
 
 module Size_t = Unsigned.Size_t
+module F = C.Functions
+module T = C.Types
 
 exception Error of string
 
 let version () =
-  let n = versionNumber () in
-  (n/10_000, (n/100) mod 100, n mod 100)
+  let n = F.version_number () in
+  (n / 10_000, (n / 100) mod 100, n mod 100)
 
 let bracket res destroy k =
   let r = try k res with exn -> let () = destroy res in raise exn in
   let () = destroy res in
   r
 
-let check r = if isError r then raise (Error (getErrorName r))
+let check r = if F.is_error r then raise (Error (F.get_error_name r))
 
-let free_cctx x = check (free_cctx x)
-let free_dctx x = check (free_dctx x)
+let free_cctx x = check (F.free_cctx x)
+let free_dctx x = check (F.free_dctx x)
 
 let compress ~level ?dict s =
   let open Ctypes in
   let len = Size_t.of_int (String.length s) in
-  let dst_size = compressBound len in
+  let dst_size = F.compress_bound len in
   let dst = allocate_n char ~count:(Size_t.to_int dst_size) in
   let r =
     match dict with
-    | None -> do_compress (to_voidp dst) dst_size s len level
+    | None -> F.compress (to_voidp dst) dst_size s len level
     | Some dict ->
       let dlen = Size_t.of_int (String.length dict) in
-      bracket (create_cctx ()) free_cctx begin fun cctx ->
-        do_compress_dict cctx (to_voidp dst) dst_size s len dict dlen level
+      bracket (F.create_cctx ()) free_cctx begin fun cctx ->
+        F.compress_using_dict cctx (to_voidp dst) dst_size s len dict dlen level
       end
   in
   check r;
@@ -41,11 +42,11 @@ let decompress orig ?dict s =
   let dst = allocate_n char ~count:orig in
   let r =
     match dict with
-    | None -> do_decompress (to_voidp dst) (Size_t.of_int orig) s (Size_t.of_int (String.length s))
+    | None -> F.decompress (to_voidp dst) (Size_t.of_int orig) s (Size_t.of_int (String.length s))
     | Some dict ->
       let dlen = Size_t.of_int (String.length dict) in
-      bracket (create_dctx ()) free_dctx begin fun dctx ->
-        do_decompress_dict dctx (to_voidp dst) (Size_t.of_int orig) s (Size_t.of_int (String.length s)) dict dlen
+      bracket (F.create_dctx ()) free_dctx begin fun dctx ->
+        F.decompress_using_dict dctx (to_voidp dst) (Size_t.of_int orig) s (Size_t.of_int (String.length s)) dict dlen
       end
   in
   check r;

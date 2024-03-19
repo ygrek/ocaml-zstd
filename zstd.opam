@@ -16,7 +16,7 @@ build: [
 ]
 depends: [
   "ocaml"
-  "dune" {>= "2.0"}
+  "dune" {>= "3.7"}
   "ctypes"
   "integers"
   ("extlib" {with-test} | "extlib-compat" {with-test})
