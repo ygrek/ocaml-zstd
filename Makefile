@@ -22,10 +22,13 @@ clean:
 .PHONY: build doc test all install uninstall clean
 
 VERSION=0.4
-NAME=ocaml-zstd-$(VERSION)
+NAME=zstd-$(VERSION)
 
 .PHONY: release
 release:
-	git tag -a -m $(VERSION) v$(VERSION)
-	git archive --prefix=$(NAME)/ v$(VERSION) | gzip > $(NAME).tar.gz
-	gpg -a -b $(NAME).tar.gz -o $(NAME).tar.gz.asc
+	dune-release tag v$(VERSION)
+	dune-release distrib
+	gpg -a -b _build/$(NAME).tbz -o $(NAME).tbz.asc
+	dune-release publish -m ""
+	dune-release opam pkg
+	dune-release opam submit -m ""
