@@ -3,7 +3,7 @@
  (public_name zstd.stubs)
  (libraries ctypes.stubs integers)
  (ctypes
-  (external_library_name libzstd)
+  (external_library_name zstd)
   (headers (include "zstd.h"))
   (type_description
    (instance Types)
