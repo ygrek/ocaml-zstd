@@ -19,6 +19,9 @@ uninstall:
 clean:
 	dune clean
 
+bench-seekable:
+	dune exec --profile=release bench/bench_seekable.exe
+
 .PHONY: build doc test all install uninstall clean
 
 VERSION=0.4

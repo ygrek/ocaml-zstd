@@ -1,0 +1,11 @@
+(library
+ (public_name zstd.seekable)
+ (name zstd_seekable)
+ (modules zstd_seekable)
+ (libraries
+  bigarray-compat
+  bigstringaf
+  ctypes.stubs
+  integers
+  zstd.stubs
+  zstd))

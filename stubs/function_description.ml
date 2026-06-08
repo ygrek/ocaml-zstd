@@ -61,4 +61,10 @@ module Functions (F : Cstubs.FOREIGN) = struct
     (ptr cctx @-> string @-> size_t @-> returning size_t)
   let dctx_load_dictionary = foreign "ZSTD_DCtx_loadDictionary"
     (ptr dctx @-> string @-> size_t @-> returning size_t)
+
+  let dctx_reset = foreign "ZSTD_DCtx_reset"
+    (ptr dctx @-> int @-> returning size_t)
+
+  let cctx_reset = foreign "ZSTD_CCtx_reset"
+    (ptr cctx @-> int @-> returning size_t)
 end

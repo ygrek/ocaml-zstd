@@ -4,7 +4,8 @@
  (libraries ctypes.stubs integers)
  (ctypes
   (external_library_name libzstd)
-  (headers (include "zstd.h"))
+  (headers
+   (include "zstd.h"))
   (type_description
    (instance Types)
    (functor Type_description))
